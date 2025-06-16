@@ -3,6 +3,7 @@
     "name": "test-technique-app",
     "slug": "test-technique-app",
     "version": "1.0.0",
+    "scheme": "test-technique-app",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,6 +25,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
