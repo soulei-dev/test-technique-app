@@ -25,7 +25,7 @@ const OperationListItem = ({
     <Container>
       <TopRow>
         <LabelContainer>
-          <Label>{label}</Label>
+          <Label numberOfLines={1}>{label}</Label>
           <Category>{categoryLabel}</Category>
         </LabelContainer>
         <Amount $amountColor={amountColor}>{formatSignedAmount(amount)}</Amount>
