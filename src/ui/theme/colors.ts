@@ -1,4 +1,4 @@
-type ColorKeys = "text" | "primary" | "blue600" | "gray" | "gray300" | "gray325" | "gray350" | "white" | "black" | "green500";
+type ColorKeys = "text" | "primary" | "blue600" | "gray" | "gray300" | "gray325" | "gray350" | "white" | "black" | "green500" | "red";
 
 export const COLORS: Record<ColorKeys, string> = {
   text: '#013A51',
@@ -10,5 +10,6 @@ export const COLORS: Record<ColorKeys, string> = {
   gray350: '#686E75',
   white: '#FFFFFF',
   black: "#000000",
-  green500: "#00BB81"
+  green500: "#00BB81",
+  red: "#FD755F",
 } as const;
