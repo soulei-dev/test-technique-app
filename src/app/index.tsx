@@ -3,6 +3,7 @@ import CustomSearchBar from '@ui/components/CustomSearchBar/CustomSearchBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Spacer } from '@ui/components/Spacer/Spacer';
 import OperationsSummaryCard from '@operations/components/OperationsSummaryCard/OperationsSummaryCard';
+import OperationListItem from '@operations/components/OperationListItem/OperationListItem';
 
 const OperationsScreen = () => {
   const mockOperationsStats = {
@@ -18,6 +19,14 @@ const OperationsScreen = () => {
         <CustomSearchBar placeholder="Rechercher un élément" />
         <Spacer size={16} />
         <OperationsSummaryCard data={mockOperationsStats} />
+        <Spacer size={10} />
+        <OperationListItem
+          label="Recette Juin 2024"
+          amount={-1200}
+          categoryLabel="Consommables"
+          tagLabel="Honoraire rétrocédés"
+          tagColor={'green'}
+        />
       </Container>
     </SafeAreaContainer>
   );
