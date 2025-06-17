@@ -5,8 +5,11 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { FONTS } from '@ui/theme/fonts';
 import { PaperProvider } from 'react-native-paper';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
 
 const RootLayout = () => {
   const [loaded, error] = useFonts(FONTS);
@@ -22,16 +25,18 @@ const RootLayout = () => {
   }
 
   return (
-    <PaperProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: COLORS.white,
-          },
-        }}
-      />
-    </PaperProvider>
+    <QueryClientProvider client={queryClient}>
+      <PaperProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: COLORS.white,
+            },
+          }}
+        />
+      </PaperProvider>
+    </QueryClientProvider>
   );
 };
 
