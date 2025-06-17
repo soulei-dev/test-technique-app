@@ -4,6 +4,7 @@ import { COLORS } from '@ui/theme/colors';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { FONTS } from '@ui/theme/fonts';
+import { PaperProvider } from 'react-native-paper';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,14 +22,16 @@ const RootLayout = () => {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: {
-          backgroundColor: COLORS.white,
-        },
-      }}
-    />
+    <PaperProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+    </PaperProvider>
   );
 };
 

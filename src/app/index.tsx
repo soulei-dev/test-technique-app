@@ -1,22 +1,25 @@
 import styled from 'styled-components/native';
+import CustomSearchBar from '@ui/components/CustomSearchBar/CustomSearchBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Spacer } from '@ui/components/Spacer/Spacer';
 
 const OperationsScreen = () => {
   return (
-    <Container>
-      <ScreenTitle>Operations List screen</ScreenTitle>
-    </Container>
+    <SafeAreaContainer>
+      <Container>
+        <Spacer size={12} />
+        <CustomSearchBar placeholder="Rechercher un élément" />
+      </Container>
+    </SafeAreaContainer>
   );
 };
 
 export default OperationsScreen;
 
-const Container = styled.View`
-  flex: 1;
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-`;
+const SafeAreaContainer = styled(SafeAreaView)({
+  flex: 1,
+});
 
-const ScreenTitle = styled.Text`
-  font-family: 'OpenSans-Regular';
-`;
+const Container = styled.View({
+  paddingHorizontal: 24,
+});
