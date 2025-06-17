@@ -3,7 +3,8 @@ type ColorKeys =
   "primary" | 
   "blue600" | 
   "gray" | 
-  "darkGray" | 
+  "darkGray" |
+  "gray200" |
   "gray300" | 
   "gray325" | 
   "gray350" | 
@@ -18,6 +19,7 @@ export const COLORS: Record<ColorKeys, string> = {
   blue600: '#1093CB',
   gray: '#354A61',
   darkGray: '#636970',
+  gray200: '#F3F5F8',
   gray300: '#DCE4ED',
   gray325: "#B3BBC0",
   gray350: '#686E75',
