@@ -17,6 +17,7 @@ import { groupOperationsByDate } from '@operations/utils/groupOperationsByDate';
 import OperationsListStatus from '@operations/components/OperationsListStatus/OperationsListStatus';
 import { useOperationsStatsQuery } from '@operations/hooks/useOperationsStatsQuery';
 import { Stats } from '@operations/types';
+import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
 
 const OperationsScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -42,6 +43,8 @@ const OperationsScreen = () => {
     refetch: refetchStats,
   } = useOperationsStatsQuery();
 
+  const { data: categories, refetch: refetchCategories } = useCategoriesQuery();
+
   const defaultStats: Stats = {
     incomesTotal: 0,
     outcomesTotal: 0,
@@ -60,6 +63,7 @@ const OperationsScreen = () => {
       setIsRefreshing(true);
       await refetch();
       await refetchStats();
+      await refetchCategories();
     } finally {
       setIsRefreshing(false);
     }
@@ -117,7 +121,11 @@ const OperationsScreen = () => {
           <OperationsListStatus isLoading={isFetching} />
         )}
         renderItem={({ item }) => (
-          <OperationGroupItem date={item.date} operations={item.operations} />
+          <OperationGroupItem
+            date={item.date}
+            operations={item.operations}
+            categories={categories ?? []}
+          />
         )}
         refreshing={isRefreshing}
         onRefresh={handleRefresh}

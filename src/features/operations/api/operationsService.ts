@@ -1,6 +1,9 @@
 import api from '@shared/api/api';
 import { Operation, Stats } from '@operations/types';
 
+const OPERATIONS_URL = "/operations";
+const OPERATIONS_STATS_URL = "/operations/stats";
+
 type GetOperationsParams = {
   offset?: number;
   limit?: number;
@@ -33,7 +36,7 @@ export const getOperationsPaginatedApi = async ({
     params.append('limit', limit.toString());
     if (search) params.append('search', search);
 
-    const response = await api.get(`/operations?${params.toString()}`);
+    const response = await api.get(`${OPERATIONS_URL}?${params.toString()}`);
     return response.data;
   } catch (error) {
     console.error('Error in getOperationsPaginatedApi:', error);
@@ -49,7 +52,7 @@ export const getOperationsPaginatedApi = async ({
  */
 export const getOperationsStatsApi = async (): Promise<Stats> => {
   try {
-    const response = await api.get<Stats>(`/operations/stats`);
+    const response = await api.get<Stats>(`${OPERATIONS_STATS_URL}`);
     return response.data;
   } catch (error) {
     console.error('Error in getOperationsStatsApi:', error);
