@@ -18,6 +18,7 @@ import OperationsListStatus from '@operations/components/OperationsListStatus/Op
 import { useOperationsStatsQuery } from '@operations/hooks/useOperationsStatsQuery';
 import { Stats } from '@operations/types';
 import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
+import { useCategoriesGroupsQuery } from '@categories/hooks/useCategoriesGroupsQuery';
 
 const OperationsScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -45,6 +46,9 @@ const OperationsScreen = () => {
 
   const { data: categories, refetch: refetchCategories } = useCategoriesQuery();
 
+  const { data: categoriesGroups, refetch: refetchCategoriesGroups } =
+    useCategoriesGroupsQuery();
+
   const defaultStats: Stats = {
     incomesTotal: 0,
     outcomesTotal: 0,
@@ -64,6 +68,7 @@ const OperationsScreen = () => {
       await refetch();
       await refetchStats();
       await refetchCategories();
+      await refetchCategoriesGroups();
     } finally {
       setIsRefreshing(false);
     }
@@ -125,6 +130,7 @@ const OperationsScreen = () => {
             date={item.date}
             operations={item.operations}
             categories={categories ?? []}
+            categoriesGroups={categoriesGroups ?? []}
           />
         )}
         refreshing={isRefreshing}

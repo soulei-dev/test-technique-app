@@ -5,15 +5,21 @@ import { Operation } from '@operations/types';
 import OperationListItem from '../OperationListItem/OperationListItem';
 import { COLORS } from '@ui/theme/colors';
 import Divider from '@ui/components/Divider/Divider';
-import { Category } from '@categories/types';
+import { CategoriesGroup, Category } from '@categories/types';
 
 type Props = {
   date: string;
   operations: Operation[];
   categories: Category[];
+  categoriesGroups: CategoriesGroup[];
 };
 
-const OperationGroupItem = ({ date, operations, categories }: Props) => {
+const OperationGroupItem = ({
+  date,
+  operations,
+  categories,
+  categoriesGroups,
+}: Props) => {
   return (
     <View>
       <DateHeader>
@@ -22,6 +28,9 @@ const OperationGroupItem = ({ date, operations, categories }: Props) => {
       </DateHeader>
       {operations.map((op, index) => {
         const category = categories.find((c) => c.id === op.categoryId);
+        const categoryGroup = categoriesGroups.find(
+          (g) => g.id === category?.groupId,
+        );
 
         return (
           <View key={op.id}>
@@ -29,8 +38,8 @@ const OperationGroupItem = ({ date, operations, categories }: Props) => {
               label={op.label}
               amount={op.amount}
               categoryLabel={category?.label ?? ''}
-              tagLabel="-"
-              tagColor="blue"
+              tagLabel={categoryGroup?.label ?? ''}
+              tagColor={categoryGroup?.color ?? undefined}
             />
             {index < operations.length - 1 && <Divider />}
           </View>

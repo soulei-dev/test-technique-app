@@ -1,7 +1,9 @@
+import { TagColorKey } from '@ui/theme/tagColors';
+
 export type CategoriesGroup = {
   id: number;
   label: string;
-  color: string;
+  color: TagColorKey;
 };
 
 export type Category = {
