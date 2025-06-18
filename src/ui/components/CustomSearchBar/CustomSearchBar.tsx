@@ -4,8 +4,8 @@ import styled from 'styled-components/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 type Props = {
-  value?: string;
-  onChangeText?: (text: string) => void;
+  value: string;
+  onChangeText: (text: string) => void;
   placeholder?: string;
 };
 
@@ -18,6 +18,8 @@ const CustomSearchBar = ({ value, onChangeText, placeholder }: Props) => {
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={COLORS.gray325}
+        autoCorrect={false}
+        clearButtonMode="always"
       />
     </Container>
   );

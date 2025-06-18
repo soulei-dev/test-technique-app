@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import { Operation } from '@operations/types';
 import OperationListItem from '../OperationListItem/OperationListItem';
 import { COLORS } from '@ui/theme/colors';
+import Divider from '@ui/components/Divider/Divider';
 
 type Props = {
   date: string;
@@ -17,15 +18,17 @@ const OperationGroupItem = ({ date, operations }: Props) => {
         <DateLabel>{date}</DateLabel>
         <CountLabel>{operations.length} opérations</CountLabel>
       </DateHeader>
-      {operations.map((op) => (
-        <OperationListItem
-          key={op.id}
-          label={op.label}
-          amount={op.amount}
-          categoryLabel="-"
-          tagLabel="-"
-          tagColor="blue"
-        />
+      {operations.map((op, index) => (
+        <View key={op.id}>
+          <OperationListItem
+            label={op.label}
+            amount={op.amount}
+            categoryLabel="-"
+            tagLabel="-"
+            tagColor="blue"
+          />
+          {index < operations.length - 1 && <Divider />}
+        </View>
       ))}
     </View>
   );
