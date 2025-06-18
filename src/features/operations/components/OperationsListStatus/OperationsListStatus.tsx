@@ -9,7 +9,7 @@ interface Props {
 
 const OperationsListStatus: React.FC<Props> = ({ isLoading }) => {
   if (isLoading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator size="small" color={COLORS.primary} />;
   }
 
   return <Message>Aucune opération ne correspond à votre recherche</Message>;

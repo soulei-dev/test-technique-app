@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getOperationsPaginatedApi } from '@operations/api/operationsService';
+import { operationsKeys } from '@operations/operationsKeys';
 
 /**
  * Custom React hook to fetch paginated operations from the API
@@ -36,7 +37,7 @@ import { getOperationsPaginatedApi } from '@operations/api/operationsService';
  */
 export const useOperationsQuery = (searchTerm: string) => {
   return useInfiniteQuery({
-    queryKey: ['operations', searchTerm],
+    queryKey: operationsKeys.list(searchTerm),
     queryFn: ({ pageParam }) =>
       getOperationsPaginatedApi({
         offset: pageParam,

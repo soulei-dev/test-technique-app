@@ -3,18 +3,15 @@ import styled from 'styled-components/native';
 import CustomSearchBar from '@ui/components/CustomSearchBar/CustomSearchBar';
 import OperationsSummaryCard from '@operations/components/OperationsSummaryCard/OperationsSummaryCard';
 import { Spacer } from '@ui/components/Spacer/Spacer';
+import { Stats } from '@operations/types';
 
 interface Props {
   searchTerm: string;
   onChangeSearch: (text: string) => void;
-  totals: {
-    incomesTotal: number;
-    outcomesTotal: number;
-    balanceTotal: number;
-  };
+  stats: Stats;
 }
 
-const OperationsHeader = ({ searchTerm, onChangeSearch, totals }: Props) => {
+const OperationsHeader = ({ searchTerm, onChangeSearch, stats }: Props) => {
   return (
     <Container>
       <Spacer size={12} />
@@ -24,7 +21,7 @@ const OperationsHeader = ({ searchTerm, onChangeSearch, totals }: Props) => {
         onChangeText={onChangeSearch}
       />
       <Spacer size={16} />
-      <OperationsSummaryCard data={totals} />
+      <OperationsSummaryCard data={stats} />
       <Spacer size={10} />
     </Container>
   );

@@ -15,6 +15,8 @@ import { useOperationsQuery } from '@operations/hooks/useOperationsQuery';
 import OperationsHeader from '@operations/components/OperationsHeader/OperationsHeader';
 import { groupOperationsByDate } from '@operations/utils/groupOperationsByDate';
 import OperationsListStatus from '@operations/components/OperationsListStatus/OperationsListStatus';
+import { useOperationsStatsQuery } from '@operations/hooks/useOperationsStatsQuery';
+import { Stats } from '@operations/types';
 
 const OperationsScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -33,10 +35,17 @@ const OperationsScreen = () => {
     isFetching,
   } = useOperationsQuery(debounceSearchTerm);
 
-  const mockOperationsTotals = {
-    incomesTotal: 5917.32,
-    outcomesTotal: -7941.11,
-    balanceTotal: -2023.79,
+  const {
+    data: stats,
+    isLoading: isStatsLoading,
+    isError: isStatsError,
+    refetch: refetchStats,
+  } = useOperationsStatsQuery();
+
+  const defaultStats: Stats = {
+    incomesTotal: 0,
+    outcomesTotal: 0,
+    balanceTotal: 0,
   };
 
   const flatOperations = useMemo(() => data?.pages.flat() ?? [], [data]);
@@ -50,6 +59,7 @@ const OperationsScreen = () => {
     try {
       setIsRefreshing(true);
       await refetch();
+      await refetchStats();
     } finally {
       setIsRefreshing(false);
     }
@@ -61,7 +71,15 @@ const OperationsScreen = () => {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isError) {
+  if (isStatsLoading) {
+    return (
+      <CenteredView>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </CenteredView>
+    );
+  }
+
+  if (isError || isStatsError) {
     return (
       <SafeAreaContainer edges={['top']}>
         <CenteredView>
@@ -87,11 +105,13 @@ const OperationsScreen = () => {
           <OperationsHeader
             searchTerm={searchTerm}
             onChangeSearch={(text) => setSearchTerm(text)}
-            totals={mockOperationsTotals}
+            stats={stats ?? defaultStats}
           />
         }
         ListFooterComponent={
-          isFetchingNextPage ? <ActivityIndicator size={'small'} /> : null
+          isFetchingNextPage ? (
+            <ActivityIndicator size={'small'} color={COLORS.primary} />
+          ) : null
         }
         ListEmptyComponent={() => (
           <OperationsListStatus isLoading={isFetching} />

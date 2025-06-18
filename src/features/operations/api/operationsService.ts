@@ -1,5 +1,5 @@
 import api from '@shared/api/api';
-import { Operation } from '@operations/types';
+import { Operation, Stats } from '@operations/types';
 
 type GetOperationsParams = {
   offset?: number;
@@ -37,6 +37,22 @@ export const getOperationsPaginatedApi = async ({
     return response.data;
   } catch (error) {
     console.error('Error in getOperationsPaginatedApi:', error);
+    throw error;
+  }
+};
+
+/**
+ * Fetches operation statistics from the `/operations/stats` endpoint.
+ *
+ * @returns {Promise<Stats>} Totals for incomes, outcomes, and balance.
+ * @throws {Error} If the API call fails.
+ */
+export const getOperationsStatsApi = async (): Promise<Stats> => {
+  try {
+    const response = await api.get<Stats>(`/operations/stats`);
+    return response.data;
+  } catch (error) {
+    console.error('Error in getOperationsStatsApi:', error);
     throw error;
   }
 };
