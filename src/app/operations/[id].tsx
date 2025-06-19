@@ -74,7 +74,6 @@ const OperationDetailScreen = () => {
       });
 
       Alert.alert('Succès', 'Opération mise à jour avec succès.');
-      router.push('/');
     } catch (error) {
       Alert.alert('Erreur', "Échec de la mise à jour de l'opération.");
     }
@@ -121,6 +120,7 @@ const OperationDetailScreen = () => {
             <CategoryGroupButton
               label={categoryGroup.label}
               color={categoryGroup.color}
+              onPress={() => router.push('/categories')}
             />
           )}
         </View>
