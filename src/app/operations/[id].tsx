@@ -1,6 +1,11 @@
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import styled from 'styled-components/native';
-import { ActivityIndicator, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useOperationByIdQuery } from '@operations/hooks/useOperationByIdQuery';
 import { COLORS } from '@ui/theme/colors';
@@ -57,38 +62,40 @@ const OperationDetailScreen = () => {
   }
 
   return (
-    <KeyboardController
-      $inset={inset}
-      behavior={'padding'}
-      keyboardVerticalOffset={20}
-    >
-      <View>
-        <DateLabel>{formatDate(data?.date ?? '')}</DateLabel>
-        <Spacer size={20} />
-        <CustomInput
-          value={amount}
-          onChangeText={setAmount}
-          labelText="Montant"
-          right={<TextInput.Icon icon="currency-eur" color={COLORS.text} />}
-        />
-        <Spacer size={20} />
-        <CustomInput
-          value={description}
-          onChangeText={setDescription}
-          labelText="Description"
-          multiline
-        />
-        <Spacer size={20} />
-        {categoryGroup && (
-          <CategoryGroupButton
-            label={categoryGroup.label}
-            color={categoryGroup.color}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardController
+        $inset={inset}
+        behavior={'padding'}
+        keyboardVerticalOffset={20}
+      >
+        <View>
+          <DateLabel>{formatDate(data?.date ?? '')}</DateLabel>
+          <Spacer size={20} />
+          <CustomInput
+            value={amount}
+            onChangeText={setAmount}
+            labelText="Montant"
+            right={<TextInput.Icon icon="currency-eur" color={COLORS.text} />}
           />
-        )}
-      </View>
+          <Spacer size={20} />
+          <CustomInput
+            value={description}
+            onChangeText={setDescription}
+            labelText="Description"
+            multiline
+          />
+          <Spacer size={20} />
+          {categoryGroup && (
+            <CategoryGroupButton
+              label={categoryGroup.label}
+              color={categoryGroup.color}
+            />
+          )}
+        </View>
 
-      <CustomButton label="Enregistrer" onPress={() => {}} />
-    </KeyboardController>
+        <CustomButton label="Enregistrer" onPress={() => {}} />
+      </KeyboardController>
+    </TouchableWithoutFeedback>
   );
 };
 
