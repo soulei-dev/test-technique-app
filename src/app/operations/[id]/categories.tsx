@@ -3,21 +3,25 @@ import CategoryItem from '@categories/components/CategoryItem/CategoryItem';
 import CategorySortButtons, {
   FilterOption,
 } from '@categories/components/CategorySortButtons/CategorySortButtons';
+import { useSelectedCategory } from '@categories/context/SelectedCategoryContext';
 import { useCategoriesGroupsQuery } from '@categories/hooks/useCategoriesGroupsQuery';
 import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
 import { useCategoryFilter } from '@categories/hooks/useCategoryFilter';
-import { Category } from '@categories/types';
+import { CategoriesGroup, Category } from '@categories/types';
 import { FlashList } from '@shopify/flash-list';
 import { Spacer } from '@ui/components/Spacer/Spacer';
 import { TagColorKey } from '@ui/theme/tagColors';
+import { useNavigation, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
 const CategoriesScreen = () => {
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-
+  const router = useRouter();
+  const { setCategory } = useSelectedCategory();
   const inset = useSafeAreaInsets();
+
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const { data: categories, refetch: refetchCategories } = useCategoriesQuery();
   const { data: categoriesGroups, refetch: refetchCategoriesGroups } =
@@ -27,6 +31,11 @@ const CategoriesScreen = () => {
     categories,
     categoriesGroups,
   );
+
+  const handleCategorySelect = (category: Category, group: CategoriesGroup) => {
+    setCategory(category, group);
+    router.back();
+  };
 
   const handleRefresh = async () => {
     try {
@@ -49,14 +58,23 @@ const CategoriesScreen = () => {
           label={item.label}
           color={item.color as TagColorKey}
           categories={item.categories}
+          onCategorySelect={handleCategorySelect}
         />
       );
     }
 
     const category = item as Category;
+    const group = categoriesGroups?.find((g) => g.id === category.groupId);
+
     const isLast = index === listData.length - 1;
 
-    return <CategoryItem category={category} showDivider={!isLast} />;
+    return (
+      <CategoryItem
+        category={category}
+        showDivider={!isLast}
+        onPress={() => group && handleCategorySelect(category, group)}
+      />
+    );
   };
 
   return (

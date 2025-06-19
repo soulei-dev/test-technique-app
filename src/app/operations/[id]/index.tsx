@@ -21,21 +21,26 @@ import CustomButton from '@ui/components/CustomButton/CustomButton';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Spacer } from '@ui/components/Spacer/Spacer';
-import { formatToTwoDigits } from '@shared/utils/format';
+import { formatToTwoDigits, parseAmount } from '@shared/utils/format';
 import { useUpdateOperationMutation } from '@operations/hooks/useUpdateOperationMutation';
+import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
+import { useCategoriesGroupsQuery } from '@categories/hooks/useCategoriesGroupsQuery';
+import { useSelectedCategory } from '@categories/context/SelectedCategoryContext';
 
 const OperationDetailScreen = () => {
   const router = useRouter();
   const inset = useSafeAreaInsets();
   const navigation = useNavigation();
-  const {
-    id,
-    categoryGroup: categoryGroupParam,
-    category: categoryParam,
-  } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
+  const { category: selectedCategory, categoryGroup: selectedGroup } =
+    useSelectedCategory();
+
   const { data, isLoading, isError, refetch } = useOperationByIdQuery(
     Number(id),
   );
+
+  const { data: categories } = useCategoriesQuery();
+  const { data: categoriesGroups } = useCategoriesGroupsQuery();
 
   const { mutateAsync: updateOperation, isPending } =
     useUpdateOperationMutation();
@@ -43,12 +48,13 @@ const OperationDetailScreen = () => {
   const [amount, setAmount] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
-  const categoryGroup = categoryGroupParam
-    ? (JSON.parse(categoryGroupParam as string) as CategoriesGroup)
-    : undefined;
-  const category = categoryParam
-    ? JSON.parse(categoryParam as string)
-    : undefined;
+  const operationCategory = categories?.find((c) => c.id === data?.categoryId);
+  const operationGroup = categoriesGroups?.find(
+    (g) => g.id === operationCategory?.groupId,
+  );
+
+  const category = selectedCategory ?? operationCategory;
+  const categoryGroup = selectedGroup ?? operationGroup;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -65,8 +71,9 @@ const OperationDetailScreen = () => {
   }, [data]);
 
   const handleUpdate = async () => {
-    const parsedAmount = parseFloat(amount.replace(',', '.'));
-    if (isNaN(parsedAmount)) {
+    const parsedAmount = parseAmount(amount);
+
+    if (parsedAmount === null) {
       Alert.alert('Erreur', 'Le montant saisi est invalide.');
       return;
     }
@@ -77,6 +84,7 @@ const OperationDetailScreen = () => {
         data: {
           amount: parsedAmount,
           description: description || undefined,
+          categoryId: category?.id,
         },
       });
 
@@ -124,13 +132,13 @@ const OperationDetailScreen = () => {
             multiline
           />
           <Spacer size={20} />
-          {categoryGroup && (
+          {category && categoryGroup ? (
             <CategoryGroupButton
               label={category.label}
               color={categoryGroup.color}
-              onPress={() => router.push('/categories')}
+              onPress={() => router.push(`/operations/${id}/categories`)}
             />
-          )}
+          ) : null}
         </View>
 
         <CustomButton

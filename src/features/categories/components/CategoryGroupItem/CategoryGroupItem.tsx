@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
-import { Category } from '@categories/types';
+import { CategoriesGroup, Category } from '@categories/types';
 import { COLORS } from '@ui/theme/colors';
 import Divider from '@ui/components/Divider/Divider';
 import { TAG_COLOR_MAP, TagColorKey } from '@ui/theme/tagColors';
@@ -11,10 +11,21 @@ type Props = {
   label: string;
   color: TagColorKey;
   categories: Category[];
+  onCategorySelect: (cat: Category, group: CategoriesGroup) => void;
 };
 
-const CategoryGroupItem = ({ label, color, categories }: Props) => {
+const CategoryGroupItem = ({
+  label,
+  color,
+  categories,
+  onCategorySelect,
+}: Props) => {
   const colors = TAG_COLOR_MAP[color];
+  const group: CategoriesGroup = {
+    id: categories[0].groupId,
+    label,
+    color,
+  };
 
   return (
     <View>
@@ -24,10 +35,10 @@ const CategoryGroupItem = ({ label, color, categories }: Props) => {
 
       {categories.map((cat, index) => (
         <View key={cat.id}>
-          <CategoryItem>
+          <ButtonContainer onPress={() => onCategorySelect(cat, group)}>
             <CategoryLabel>{cat.label}</CategoryLabel>
             <CategoryDescription>{cat.description}</CategoryDescription>
-          </CategoryItem>
+          </ButtonContainer>
           {index < categories.length - 1 && <Divider />}
         </View>
       ))}
@@ -51,7 +62,7 @@ const GroupLabel = styled.Text<{ $color: string }>(({ $color }) => ({
   color: $color,
 }));
 
-const CategoryItem = styled.View({
+const ButtonContainer = styled.TouchableOpacity({
   paddingVertical: 16,
   paddingHorizontal: 24,
   backgroundColor: 'white',

@@ -31,3 +31,19 @@ export const formatToTwoDigits = (value: number): string => {
   const formatted = Math.abs(value).toFixed(2).replace('.', ',');
   return value < 0 ? `- ${formatted}` : formatted;
 };
+
+/**
+ * Parses a string amount into a number.
+ * Replaces commas, strips invalid characters. Returns null if invalid.
+ *
+ * @param value - The input string to parse.
+ * @returns A valid number or null.
+ */
+export const parseAmount = (value: string): number | null => {
+  if (!value) return null;
+
+  const cleaned = value.replace(',', '.').replace(/[^\d.-]/g, '');
+
+  const parsed = parseFloat(cleaned);
+  return isNaN(parsed) ? null : parsed;
+};

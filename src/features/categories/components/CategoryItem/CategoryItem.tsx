@@ -7,11 +7,12 @@ import Divider from '@ui/components/Divider/Divider';
 type Props = {
   category: Category;
   showDivider?: boolean;
+  onPress?: () => void;
 };
 
-const CategoryItem = ({ category, showDivider = false }: Props) => (
+const CategoryItem = ({ category, showDivider = false, onPress }: Props) => (
   <>
-    <Wrapper>
+    <Wrapper onPress={onPress}>
       <Label>{category.label}</Label>
       <Description>{category.description}</Description>
     </Wrapper>
@@ -21,7 +22,7 @@ const CategoryItem = ({ category, showDivider = false }: Props) => (
 
 export default CategoryItem;
 
-const Wrapper = styled.View({
+const Wrapper = styled.TouchableOpacity({
   paddingVertical: 16,
   paddingHorizontal: 24,
   backgroundColor: 'white',
