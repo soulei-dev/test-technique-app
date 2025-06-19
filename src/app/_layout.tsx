@@ -30,9 +30,7 @@ const RootLayout = () => {
         <Stack
           screenOptions={{
             headerShown: false,
-            contentStyle: {
-              backgroundColor: COLORS.white,
-            },
+            contentStyle: { backgroundColor: COLORS.white },
           }}
         />
       </PaperProvider>

@@ -59,3 +59,20 @@ export const getOperationsStatsApi = async (): Promise<Stats> => {
     throw error;
   }
 };
+
+/**
+ * Fetch a single operation by its ID.
+ *
+ * @param {number} id - The ID of the operation to retrieve.
+ * @returns {Promise<Operation>} The operation data.
+ * @throws Will throw an error if the request fails.
+ */
+export const getOperationByIdApi = async (id: number): Promise<Operation> => {
+  try {
+    const response = await api.get<Operation>(`${OPERATIONS_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error in getOperationByIdApi:', error);
+    throw error;
+  }
+};

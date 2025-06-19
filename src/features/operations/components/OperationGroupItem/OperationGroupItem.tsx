@@ -1,11 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import styled from 'styled-components/native';
 import { Operation } from '@operations/types';
 import OperationListItem from '../OperationListItem/OperationListItem';
 import { COLORS } from '@ui/theme/colors';
 import Divider from '@ui/components/Divider/Divider';
 import { CategoriesGroup, Category } from '@categories/types';
+import { useRouter } from 'expo-router';
 
 type Props = {
   date: string;
@@ -20,6 +21,8 @@ const OperationGroupItem = ({
   categories,
   categoriesGroups,
 }: Props) => {
+  const router = useRouter();
+
   return (
     <View>
       <DateHeader>
@@ -33,7 +36,10 @@ const OperationGroupItem = ({
         );
 
         return (
-          <View key={op.id}>
+          <TouchableOpacity
+            key={op.id}
+            onPress={() => router.push(`/operations/${op.id}`)}
+          >
             <OperationListItem
               label={op.label}
               amount={op.amount}
@@ -42,7 +48,7 @@ const OperationGroupItem = ({
               tagColor={categoryGroup?.color ?? undefined}
             />
             {index < operations.length - 1 && <Divider />}
-          </View>
+          </TouchableOpacity>
         );
       })}
     </View>

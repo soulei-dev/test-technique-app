@@ -2,13 +2,11 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { Spacer } from '@ui/components/Spacer/Spacer';
 import { ActivityIndicator } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import OperationGroupItem from '@operations/components/OperationGroupItem/OperationGroupItem';
 import styled from 'styled-components/native';
 import { useCallback, useMemo, useState } from 'react';
-import CustomButton from '@ui/components/CustomButton/CustomButton';
 import { COLORS } from '@ui/theme/colors';
 import useDebounce from '@shared/hooks/useDebounce';
 import { useOperationsQuery } from '@operations/hooks/useOperationsQuery';
@@ -19,6 +17,7 @@ import { useOperationsStatsQuery } from '@operations/hooks/useOperationsStatsQue
 import { Stats } from '@operations/types';
 import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
 import { useCategoriesGroupsQuery } from '@categories/hooks/useCategoriesGroupsQuery';
+import ErrorState from '@ui/components/ErrorState/ErrorState';
 
 const OperationsScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -89,15 +88,7 @@ const OperationsScreen = () => {
   }
 
   if (isError || isStatsError) {
-    return (
-      <SafeAreaContainer edges={['top']}>
-        <CenteredView>
-          <ErrorText>Un problème est survenu</ErrorText>
-          <Spacer size={12} />
-          <CustomButton label="Réessayez" onPress={() => refetch()} />
-        </CenteredView>
-      </SafeAreaContainer>
-    );
+    return <ErrorState onRetry={handleRefresh} />;
   }
 
   return (
@@ -144,12 +135,6 @@ export default OperationsScreen;
 
 const SafeAreaContainer = styled(SafeAreaView)({
   flex: 1,
-});
-
-const ErrorText = styled.Text({
-  color: COLORS.text,
-  textAlign: 'center',
-  fontFamily: 'OpenSans-Semibold',
 });
 
 const CenteredView = styled.View({
