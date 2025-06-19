@@ -5,21 +5,17 @@ import CategorySortButtons, {
 } from '@categories/components/CategorySortButtons/CategorySortButtons';
 import { useCategoriesGroupsQuery } from '@categories/hooks/useCategoriesGroupsQuery';
 import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
+import { useCategoryFilter } from '@categories/hooks/useCategoryFilter';
 import { Category } from '@categories/types';
-import {
-  groupCategoriesByGroup,
-  GroupedCategories,
-} from '@categories/utils/groupCategoriesByGroup';
 import { FlashList } from '@shopify/flash-list';
 import { Spacer } from '@ui/components/Spacer/Spacer';
 import { TagColorKey } from '@ui/theme/tagColors';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
 const CategoriesScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [filter, setFilter] = useState<FilterOption>('group');
 
   const inset = useSafeAreaInsets();
 
@@ -27,20 +23,10 @@ const CategoriesScreen = () => {
   const { data: categoriesGroups, refetch: refetchCategoriesGroups } =
     useCategoriesGroupsQuery();
 
-  const groupedCategories: GroupedCategories[] = useMemo(() => {
-    if (!categories || !categoriesGroups) return [];
-    return groupCategoriesByGroup(categories, categoriesGroups);
-  }, [categories, categoriesGroups]);
-
-  const sortedCategoriesAZ = useMemo(() => {
-    if (!categories) return [];
-    return [...categories].sort((a, b) => a.label.localeCompare(b.label));
-  }, [categories]);
-
-  const sortedCategoriesZA = useMemo(() => {
-    if (!categories) return [];
-    return [...categories].sort((a, b) => b.label.localeCompare(a.label));
-  }, [categories]);
+  const { filter, setFilter, listData } = useCategoryFilter(
+    categories,
+    categoriesGroups,
+  );
 
   const handleRefresh = async () => {
     try {
@@ -72,17 +58,6 @@ const CategoriesScreen = () => {
 
     return <CategoryItem category={category} showDivider={!isLast} />;
   };
-
-  const listData = useMemo(() => {
-    switch (filter) {
-      case 'az':
-        return sortedCategoriesAZ;
-      case 'za':
-        return sortedCategoriesZA;
-      default:
-        return groupedCategories;
-    }
-  }, [filter, groupedCategories, sortedCategoriesAZ, sortedCategoriesZA]);
 
   return (
     <Container>
