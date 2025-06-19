@@ -20,6 +20,7 @@ import CustomButton from '@ui/components/CustomButton/CustomButton';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Spacer } from '@ui/components/Spacer/Spacer';
+import { formatToTwoDigits } from '@shared/utils/format';
 
 const OperationDetailScreen = () => {
   const inset = useSafeAreaInsets();
@@ -44,7 +45,8 @@ const OperationDetailScreen = () => {
 
   useEffect(() => {
     if (data) {
-      setAmount(String(data.amount));
+      const parsed = parseFloat(String(data.amount));
+      setAmount(!isNaN(parsed) ? formatToTwoDigits(parsed) : '');
       setDescription(data.description ?? '');
     }
   }, [data]);
@@ -76,6 +78,7 @@ const OperationDetailScreen = () => {
             onChangeText={setAmount}
             labelText="Montant"
             right={<TextInput.Icon icon="currency-eur" color={COLORS.text} />}
+            keyboardType="numeric"
           />
           <Spacer size={20} />
           <CustomInput

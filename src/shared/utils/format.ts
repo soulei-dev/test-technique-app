@@ -18,3 +18,16 @@ export const formatSignedAmount = (value: number) => {
   const sign = value >= 0 ? '+' : '-';
   return `${sign} ${Math.abs(value).toFixed(2).replace('.', ',')} €`;
 };
+
+/**
+ * Formats a number with two decimal places,
+ * using a comma as decimal separator.
+ * Adds a space after the minus sign if negative.
+ *
+ * @param value - The numeric value to format
+ * @returns A string like "- 500,00" or "24,44"
+ */
+export const formatToTwoDigits = (value: number): string => {
+  const formatted = Math.abs(value).toFixed(2).replace('.', ',');
+  return value < 0 ? `- ${formatted}` : formatted;
+};

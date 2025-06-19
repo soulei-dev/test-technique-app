@@ -1,4 +1,4 @@
-import { formatAmount, formatSignedAmount } from './format';
+import { formatAmount, formatSignedAmount, formatToTwoDigits } from './format';
 
 describe('formatAmount', () => {
   it('formats a positive number with comma and euro symbol', () => {
@@ -25,5 +25,21 @@ describe('formatSignedAmount', () => {
 
   it('handles zero as positive', () => {
     expect(formatSignedAmount(0)).toBe('+ 0,00 €');
+  });
+});
+
+describe('formatToTwoDigits', () => {
+  it('formats positive numbers with comma and two decimals', () => {
+    expect(formatToTwoDigits(24.44)).toBe('24,44');
+    expect(formatToTwoDigits(100)).toBe('100,00');
+  });
+
+  it('formats negative numbers with space after minus', () => {
+    expect(formatToTwoDigits(-500)).toBe('- 500,00');
+    expect(formatToTwoDigits(-0.3)).toBe('- 0,30');
+  });
+
+  it('formats zero correctly', () => {
+    expect(formatToTwoDigits(0)).toBe('0,00');
   });
 });
