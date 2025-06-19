@@ -22,6 +22,7 @@ const ButtonContainer = styled.TouchableOpacity({
   paddingHorizontal: 16,
   alignItems: 'center',
   borderRadius: 8,
+  width: '100%',
 });
 
 const Label = styled.Text({

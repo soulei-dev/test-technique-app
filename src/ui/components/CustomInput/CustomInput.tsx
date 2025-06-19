@@ -15,6 +15,7 @@ const CustomInput = ({ labelText, ...rest }: Props) => {
       activeOutlineColor={COLORS.gray300}
       textColor={COLORS.text}
       selectionColor={COLORS.text}
+      cursorColor={COLORS.text}
       label={<Label>{labelText}</Label>}
       {...rest}
     />

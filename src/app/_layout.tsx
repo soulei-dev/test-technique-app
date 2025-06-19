@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { FONTS } from '@ui/theme/fonts';
 import { PaperProvider } from 'react-native-paper';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,14 +27,16 @@ const RootLayout = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PaperProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: COLORS.white },
-          }}
-        />
-      </PaperProvider>
+      <KeyboardProvider>
+        <PaperProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: COLORS.white },
+            }}
+          />
+        </PaperProvider>
+      </KeyboardProvider>
     </QueryClientProvider>
   );
 };

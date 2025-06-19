@@ -38,7 +38,14 @@ const OperationGroupItem = ({
         return (
           <TouchableOpacity
             key={op.id}
-            onPress={() => router.push(`/operations/${op.id}`)}
+            onPress={() =>
+              router.push({
+                pathname: `/operations/${op.id}`,
+                params: {
+                  categoryGroup: JSON.stringify(categoryGroup),
+                },
+              })
+            }
           >
             <OperationListItem
               label={op.label}
