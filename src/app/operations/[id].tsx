@@ -1,7 +1,8 @@
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import styled from 'styled-components/native';
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
   TouchableWithoutFeedback,
   View,
@@ -21,14 +22,19 @@ import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Spacer } from '@ui/components/Spacer/Spacer';
 import { formatToTwoDigits } from '@shared/utils/format';
+import { useUpdateOperationMutation } from '@operations/hooks/useUpdateOperationMutation';
 
 const OperationDetailScreen = () => {
+  const router = useRouter();
   const inset = useSafeAreaInsets();
   const navigation = useNavigation();
   const { id, categoryGroup: categoryGroupParam } = useLocalSearchParams();
   const { data, isLoading, isError, refetch } = useOperationByIdQuery(
     Number(id),
   );
+
+  const { mutateAsync: updateOperation, isPending } =
+    useUpdateOperationMutation();
 
   const [amount, setAmount] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -50,6 +56,29 @@ const OperationDetailScreen = () => {
       setDescription(data.description ?? '');
     }
   }, [data]);
+
+  const handleUpdate = async () => {
+    const parsedAmount = parseFloat(amount.replace(',', '.'));
+    if (isNaN(parsedAmount)) {
+      Alert.alert('Erreur', 'Le montant saisi est invalide.');
+      return;
+    }
+
+    try {
+      await updateOperation({
+        id: Number(id),
+        data: {
+          amount: parsedAmount,
+          description: description || undefined,
+        },
+      });
+
+      Alert.alert('Succès', 'Opération mise à jour avec succès.');
+      router.push('/');
+    } catch (error) {
+      Alert.alert('Erreur', "Échec de la mise à jour de l'opération.");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -96,7 +125,11 @@ const OperationDetailScreen = () => {
           )}
         </View>
 
-        <CustomButton label="Enregistrer" onPress={() => {}} />
+        <CustomButton
+          label="Enregistrer"
+          onPress={handleUpdate}
+          disabled={isPending}
+        />
       </KeyboardController>
     </TouchableWithoutFeedback>
   );

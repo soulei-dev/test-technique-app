@@ -4,11 +4,12 @@ import styled from 'styled-components/native';
 type Props = {
   label: string;
   onPress: () => void;
+  disabled?: boolean;
 };
 
-const CustomButton = ({ label, onPress }: Props) => {
+const CustomButton = ({ label, onPress, disabled = false }: Props) => {
   return (
-    <ButtonContainer onPress={onPress}>
+    <ButtonContainer onPress={onPress} disabled={disabled} $disabled={disabled}>
       <Label>{label}</Label>
     </ButtonContainer>
   );
@@ -16,14 +17,17 @@ const CustomButton = ({ label, onPress }: Props) => {
 
 export default CustomButton;
 
-const ButtonContainer = styled.TouchableOpacity({
-  backgroundColor: COLORS.primary,
-  paddingVertical: 12,
-  paddingHorizontal: 16,
-  alignItems: 'center',
-  borderRadius: 8,
-  width: '100%',
-});
+const ButtonContainer = styled.TouchableOpacity<{ $disabled: boolean }>(
+  ({ $disabled }) => ({
+    backgroundColor: COLORS.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    borderRadius: 8,
+    width: '100%',
+    opacity: $disabled ? 0.4 : 1,
+  }),
+);
 
 const Label = styled.Text({
   color: COLORS.white,

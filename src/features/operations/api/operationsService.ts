@@ -76,3 +76,24 @@ export const getOperationByIdApi = async (id: number): Promise<Operation> => {
     throw error;
   }
 };
+
+/**
+ * Updates an existing operation by ID.
+ *
+ * @param id - The ID of the operation to update.
+ * @param data - The fields to update (amount, description, categoryId).
+ * @returns A promise resolving to the updated Operation object.
+ * @throws Will throw an error if the API request fails.
+ */
+export const updateOperationApi = async (
+  id: number,
+  data: Partial<Pick<Operation, 'amount' | 'description' | 'categoryId'>>
+): Promise<Operation> => {
+  try {
+    const response = await api.put<Operation>(`${OPERATIONS_URL}/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error in updateOperationApi:', error);
+    throw error;
+  }
+};
