@@ -28,7 +28,11 @@ const OperationDetailScreen = () => {
   const router = useRouter();
   const inset = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { id, categoryGroup: categoryGroupParam } = useLocalSearchParams();
+  const {
+    id,
+    categoryGroup: categoryGroupParam,
+    category: categoryParam,
+  } = useLocalSearchParams();
   const { data, isLoading, isError, refetch } = useOperationByIdQuery(
     Number(id),
   );
@@ -41,6 +45,9 @@ const OperationDetailScreen = () => {
 
   const categoryGroup = categoryGroupParam
     ? (JSON.parse(categoryGroupParam as string) as CategoriesGroup)
+    : undefined;
+  const category = categoryParam
+    ? JSON.parse(categoryParam as string)
     : undefined;
 
   useLayoutEffect(() => {
@@ -74,6 +81,7 @@ const OperationDetailScreen = () => {
       });
 
       Alert.alert('Succès', 'Opération mise à jour avec succès.');
+      router.push('/');
     } catch (error) {
       Alert.alert('Erreur', "Échec de la mise à jour de l'opération.");
     }
@@ -118,7 +126,7 @@ const OperationDetailScreen = () => {
           <Spacer size={20} />
           {categoryGroup && (
             <CategoryGroupButton
-              label={categoryGroup.label}
+              label={category.label}
               color={categoryGroup.color}
               onPress={() => router.push('/categories')}
             />

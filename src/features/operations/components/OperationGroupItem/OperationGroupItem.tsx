@@ -43,6 +43,7 @@ const OperationGroupItem = ({
                 pathname: `/operations/${op.id}`,
                 params: {
                   categoryGroup: JSON.stringify(categoryGroup),
+                  category: JSON.stringify(category),
                 },
               })
             }
@@ -50,8 +51,8 @@ const OperationGroupItem = ({
             <OperationListItem
               label={op.label}
               amount={op.amount}
-              categoryLabel={category?.label ?? ''}
-              tagLabel={categoryGroup?.label ?? ''}
+              categoryLabel={op.description}
+              tagLabel={category?.label ?? ''}
               tagColor={categoryGroup?.color ?? undefined}
             />
             {index < operations.length - 1 && <Divider />}
