@@ -43,7 +43,7 @@ export const formatToTwoDigits = (value: number): string => {
 export const parseAmount = (value: string): number | null => {
   if (!value) return null;
 
-  const normalized = value.replace(',', '.').trim();
+  const normalized = value.replace(/\s/g, '').replace(',', '.');
 
   const isValid = /^-?\d+(\.\d+)?$/.test(normalized);
   if (!isValid) return null;
