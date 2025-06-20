@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 type Props = {
   label: string;
   amount: number;
-  categoryLabel: string;
+  description: string;
   tagLabel: string;
   tagColor?: TagColorKey;
 };
@@ -15,7 +15,7 @@ type Props = {
 const OperationListItem = ({
   label,
   amount,
-  categoryLabel,
+  description,
   tagLabel,
   tagColor,
 }: Props) => {
@@ -26,7 +26,7 @@ const OperationListItem = ({
       <TopRow>
         <LabelContainer>
           <Label numberOfLines={1}>{label}</Label>
-          <Category>{categoryLabel}</Category>
+          <Description numberOfLines={2}>{description}</Description>
         </LabelContainer>
         <Amount $amountColor={amountColor}>{formatSignedAmount(amount)}</Amount>
       </TopRow>
@@ -67,7 +67,7 @@ const Label = styled.Text({
   color: COLORS.text,
 });
 
-const Category = styled.Text({
+const Description = styled.Text({
   fontSize: 11,
   fontFamily: 'OpenSans-Italic',
   color: COLORS.darkGray,

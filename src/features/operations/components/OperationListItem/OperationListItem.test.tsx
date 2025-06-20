@@ -9,7 +9,7 @@ describe('OperationListItem', () => {
       <OperationListItem
         label="Facture client"
         amount={1500}
-        categoryLabel="Prestations"
+        description="Prestations"
         tagLabel="Recettes"
         tagColor="green"
       />,
@@ -26,7 +26,7 @@ describe('OperationListItem', () => {
       <OperationListItem
         label="Vente"
         amount={1000}
-        categoryLabel="Services"
+        description="Services"
         tagLabel="Revenus"
         tagColor="blue"
       />,
@@ -41,7 +41,7 @@ describe('OperationListItem', () => {
       <OperationListItem
         label="Achat matériel"
         amount={-300}
-        categoryLabel="Fournitures"
+        description="Fournitures"
         tagLabel="Achats"
         tagColor="purple"
       />,
@@ -56,7 +56,7 @@ describe('OperationListItem', () => {
       <OperationListItem
         label="Transaction inconnue"
         amount={0}
-        categoryLabel="Sans catégorie"
+        description="Sans catégorie"
         tagLabel=""
       />,
     );
