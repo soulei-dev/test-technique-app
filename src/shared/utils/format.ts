@@ -34,16 +34,20 @@ export const formatToTwoDigits = (value: number): string => {
 
 /**
  * Parses a string amount into a number.
- * Replaces commas, strips invalid characters. Returns null if invalid.
+ * Accepts only clean numeric input (e.g. "12", "12.34", "-0.5").
+ * Returns null if the string includes invalid characters.
  *
  * @param value - The input string to parse.
- * @returns A valid number or null.
+ * @returns A number or null if invalid.
  */
 export const parseAmount = (value: string): number | null => {
   if (!value) return null;
 
-  const cleaned = value.replace(',', '.').replace(/[^\d.-]/g, '');
+  const normalized = value.replace(',', '.').trim();
 
-  const parsed = parseFloat(cleaned);
+  const isValid = /^-?\d+(\.\d+)?$/.test(normalized);
+  if (!isValid) return null;
+
+  const parsed = parseFloat(normalized);
   return isNaN(parsed) ? null : parsed;
 };

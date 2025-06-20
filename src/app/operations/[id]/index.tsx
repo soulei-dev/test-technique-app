@@ -26,6 +26,7 @@ import { useUpdateOperationMutation } from '@operations/hooks/useUpdateOperation
 import { useCategoriesQuery } from '@categories/hooks/useCategoriesQuery';
 import { useCategoriesGroupsQuery } from '@categories/hooks/useCategoriesGroupsQuery';
 import { useSelectedCategory } from '@categories/context/SelectedCategoryContext';
+import Toast from 'react-native-toast-message';
 
 const OperationDetailScreen = () => {
   const router = useRouter();
@@ -74,7 +75,10 @@ const OperationDetailScreen = () => {
     const parsedAmount = parseAmount(amount);
 
     if (parsedAmount === null) {
-      Alert.alert('Erreur', 'Le montant saisi est invalide.');
+      Toast.show({
+        type: 'error',
+        text2: 'Le montant saisi est invalide',
+      });
       return;
     }
 
@@ -88,10 +92,16 @@ const OperationDetailScreen = () => {
         },
       });
 
-      Alert.alert('Succès', 'Opération mise à jour avec succès.');
+      Toast.show({
+        type: 'success',
+        text2: 'Modification enregistrée',
+      });
       router.push('/');
     } catch (error) {
-      Alert.alert('Erreur', "Échec de la mise à jour de l'opération.");
+      Toast.show({
+        type: 'success',
+        text2: "Échec de la mise à jour de l'opération",
+      });
     }
   };
 
