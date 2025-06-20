@@ -99,7 +99,7 @@ const OperationDetailScreen = () => {
       router.push('/');
     } catch (error) {
       Toast.show({
-        type: 'success',
+        type: 'error',
         text2: "Échec de la mise à jour de l'opération",
       });
     }
